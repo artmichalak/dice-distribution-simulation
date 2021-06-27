@@ -1,0 +1,7 @@
+GET http://localhost:8080/v1/simulation
+
+###
+GET http://localhost:8080/v1/simulation?dice=1&sides=4&rolls=1
+
+###
+GET http://localhost:8080/v1/simulation?dice=-10&sides=0&rolls=0

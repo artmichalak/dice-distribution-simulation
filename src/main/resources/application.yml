@@ -1,3 +1,23 @@
+logging.level:
+  tech.blackfall.dicedist: DEBUG
+  org.zalando.logbook: TRACE
+
 spring:
   application:
     name: dice-distribution
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info, health, metrics, logging
+
+logbook:
+  exclude:
+    - /actuator/health/*
+    - /actuator/health
+    - /v3/api-docs
+    - /v3/api-docs/*
+    - /swagger-ui.html
+    - /swagger-ui/*
+

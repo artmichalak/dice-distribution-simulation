@@ -36,14 +36,14 @@ class SimulationController {
 
   @GetMapping("/v1/simulation")
   @ResponseBody
-  public SimulationResultResponse runSimulation(
-      @RequestParam(name = "dice", defaultValue = DEFAULT_NUMBER_OF_DICE) @Min(MIN_NUMBER_OF_DICE) @Max(Integer.MAX_VALUE) int numberOfDice,
-      @RequestParam(name = "sides", defaultValue = DEFAULT_NUMBER_OF_SIDES) @Min(MIN_NUMBER_OF_SIDES) @Max(Integer.MAX_VALUE) int numberOfSides,
-      @RequestParam(name = "rolls", defaultValue = DEFAULT_NUMBER_OF_ROLLS) @Min(MIN_NUMBER_OF_ROLLS) @Max(Integer.MAX_VALUE) int numberOfRolls) {
-    log.info("Running simulation of rolls={} for dice={} with sides={}", numberOfRolls, numberOfDice, numberOfSides);
+  public SimulationResultResponse getSimulation(
+      @RequestParam(name = "dice", defaultValue = DEFAULT_NUMBER_OF_DICE) @Min(MIN_NUMBER_OF_DICE) @Max(Integer.MAX_VALUE) int dice,
+      @RequestParam(name = "sides", defaultValue = DEFAULT_NUMBER_OF_SIDES) @Min(MIN_NUMBER_OF_SIDES) @Max(Integer.MAX_VALUE) int sides,
+      @RequestParam(name = "rolls", defaultValue = DEFAULT_NUMBER_OF_ROLLS) @Min(MIN_NUMBER_OF_ROLLS) @Max(Integer.MAX_VALUE) int rolls) {
+    log.info("Running simulation of rolls={} for dice={} with sides={}", rolls, dice, sides);
 
     var simulationResult = simulationService
-        .runSimulation(RunSimulationCommand.of(numberOfDice, numberOfSides, numberOfRolls));
+        .runSimulation(RunSimulationCommand.of(dice, sides, rolls));
     return SimulationResultResponse.from(simulationResult);
   }
 

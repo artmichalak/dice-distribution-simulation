@@ -1,5 +1,6 @@
 package tech.blackfall.dicedist.simulation.domain;
 
+import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,9 +8,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SimulationService {
 
-  private final SimulationDistributionProvider simulationDistributionProvider;
+  private final Collection<SimulationDistributionProvider> simulationDistributionProviders;
 
   public SimulationResult runSimulation(RunSimulationCommand cmd) {
-    return simulationDistributionProvider.runSimulation(cmd);
+    SimulationDistributionProvider provider = simulationDistributionProviders.stream()
+        .filter(simulationDistributionProvider -> simulationDistributionProvider.supports(cmd.getSimulationMode()))
+        .findFirst()
+        .orElseThrow(NoMatchingSimulationModeException::new);
+    return provider.runSimulation(cmd);
   }
 }

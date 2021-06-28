@@ -1,35 +1,24 @@
 package tech.blackfall.dicedist.simulation.adapter.iterative;
 
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import tech.blackfall.dicedist.simulation.domain.AbstractSimulationDistributionProvider;
 import tech.blackfall.dicedist.simulation.domain.RunSimulationCommand;
-import tech.blackfall.dicedist.simulation.domain.SimulationDistributionProvider;
-import tech.blackfall.dicedist.simulation.domain.SimulationPartialResult;
-import tech.blackfall.dicedist.simulation.domain.SimulationResult;
+import tech.blackfall.dicedist.simulation.domain.SimulationMode;
 
 @Component
 @Slf4j
-class IterativeSimulationDistributionProvider implements SimulationDistributionProvider {
+class IterativeSimulationDistributionProvider extends AbstractSimulationDistributionProvider {
 
-  @Override
-  public SimulationResult runSimulation(RunSimulationCommand cmd) {
-    Map<Integer, Integer> distribution = computeDistribution(cmd);
-
-    List<SimulationPartialResult> partialResults = distribution.entrySet().stream()
-        .map(entry -> new SimulationPartialResult(entry.getKey(), entry.getValue()))
-        .sorted(Comparator.comparing(SimulationPartialResult::getTotalValue))
-        .collect(Collectors.toList());
-
-    return new SimulationResult(partialResults);
+  IterativeSimulationDistributionProvider() {
+    super(SimulationMode.ITER);
   }
 
-  private Map<Integer, Integer> computeDistribution(RunSimulationCommand cmd) {
+  protected Map<Integer, Integer> computeDistribution(RunSimulationCommand cmd) {
+    log.info("Running iterative simulation for command: " + cmd.toString());
     var random = ThreadLocalRandom.current();
 
     Map<Integer, Integer> distribution = new HashMap<>();

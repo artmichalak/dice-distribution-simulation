@@ -5,6 +5,7 @@ import lombok.Value;
 @Value(staticConstructor = "of")
 public class RunSimulationCommand {
 
+  SimulationMode simulationMode;
   int numberOfDice;
   int numberOfSides;
   int numberOfRolls;

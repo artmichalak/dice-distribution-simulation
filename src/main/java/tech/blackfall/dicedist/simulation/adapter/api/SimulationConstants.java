@@ -12,4 +12,6 @@ class SimulationConstants {
   static final String DEFAULT_NUMBER_OF_DICE = "3";
   static final String DEFAULT_NUMBER_OF_ROLLS = "100";
   static final String DEFAULT_NUMBER_OF_SIDES = "6";
+
+  static final String DEFAULT_SIMULATION_MODE = "ITER";
 }

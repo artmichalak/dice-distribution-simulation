@@ -5,6 +5,9 @@ import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.DEFAULT_NUMBER_OF_ROLLS;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.DEFAULT_NUMBER_OF_SIDES;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.DEFAULT_SIMULATION_MODE;
+import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MAX_NUMBER_OF_DICE;
+import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MAX_NUMBER_OF_ROLLS;
+import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MAX_NUMBER_OF_SIDES;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MIN_NUMBER_OF_DICE;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MIN_NUMBER_OF_ROLLS;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MIN_NUMBER_OF_SIDES;
@@ -34,16 +37,17 @@ import tech.blackfall.dicedist.simulation.domain.SimulationService;
 @Tag(name = "Dice Distribution Simulation")
 class SimulationController {
 
-  private static final String VALUES_SEPARATOR = ",";
-
   private final SimulationService simulationService;
 
   @GetMapping("/v1/simulation")
   @ResponseBody
   public SimulationResultResponse getSimulation(
-      @RequestParam(name = "dice", defaultValue = DEFAULT_NUMBER_OF_DICE) @Min(MIN_NUMBER_OF_DICE) @Max(Integer.MAX_VALUE) int dice,
-      @RequestParam(name = "sides", defaultValue = DEFAULT_NUMBER_OF_SIDES) @Min(MIN_NUMBER_OF_SIDES) @Max(Integer.MAX_VALUE) int sides,
-      @RequestParam(name = "rolls", defaultValue = DEFAULT_NUMBER_OF_ROLLS) @Min(MIN_NUMBER_OF_ROLLS) @Max(Integer.MAX_VALUE) int rolls,
+      @RequestParam(name = "dice", defaultValue = DEFAULT_NUMBER_OF_DICE)
+      @Min(MIN_NUMBER_OF_DICE) @Max(MAX_NUMBER_OF_DICE) int dice,
+      @RequestParam(name = "sides", defaultValue = DEFAULT_NUMBER_OF_SIDES)
+      @Min(MIN_NUMBER_OF_SIDES) @Max(MAX_NUMBER_OF_SIDES) int sides,
+      @RequestParam(name = "rolls", defaultValue = DEFAULT_NUMBER_OF_ROLLS)
+      @Min(MIN_NUMBER_OF_ROLLS) @Max(MAX_NUMBER_OF_ROLLS) int rolls,
       @RequestParam(name = "mode", defaultValue = DEFAULT_SIMULATION_MODE) SimulationMode mode) {
     log.info("Running simulation of rolls={} for dice={} with sides={}, using mode={}", rolls, dice, sides, mode);
 
@@ -55,11 +59,11 @@ class SimulationController {
   @Value
   static class SimulationResultResponse {
 
-    List<Integer> totals;
+    List<Long> totals;
     List<Integer> occurrences;
 
     static SimulationResultResponse from(SimulationResult simulationResult) {
-      List<Integer> totals = simulationResult.getValues().stream()
+      List<Long> totals = simulationResult.getValues().stream()
           .map(SimulationPartialResult::getTotalValue)
           .collect(toList());
 

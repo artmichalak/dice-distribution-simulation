@@ -4,14 +4,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import tech.blackfall.dicedist.simulation.kernel.domain.RandomGeneratorProvider;
 
 public abstract class AbstractSimulationDistributionProvider implements SimulationDistributionProvider {
 
   private final SimulationMode supportedSimulationMode;
+  protected final RandomGeneratorProvider randomGeneratorProvider;
 
-  protected AbstractSimulationDistributionProvider(
-      SimulationMode supportedSimulationMode) {
+  protected AbstractSimulationDistributionProvider(SimulationMode supportedSimulationMode,
+      RandomGeneratorProvider randomGeneratorProvider) {
     this.supportedSimulationMode = supportedSimulationMode;
+    this.randomGeneratorProvider = randomGeneratorProvider;
   }
 
   @Override
@@ -21,7 +24,7 @@ public abstract class AbstractSimulationDistributionProvider implements Simulati
 
   @Override
   public SimulationResult runSimulation(RunSimulationCommand cmd) {
-    Map<Integer, Integer> distribution = computeDistribution(cmd);
+    Map<Long, Integer> distribution = computeDistribution(cmd);
 
     List<SimulationPartialResult> partialResults = distribution.entrySet().stream()
         .map(entry -> new SimulationPartialResult(entry.getKey(), entry.getValue()))
@@ -31,5 +34,5 @@ public abstract class AbstractSimulationDistributionProvider implements Simulati
     return new SimulationResult(partialResults);
   }
 
-  protected abstract Map<Integer, Integer> computeDistribution(RunSimulationCommand cmd);
+  protected abstract Map<Long, Integer> computeDistribution(RunSimulationCommand cmd);
 }

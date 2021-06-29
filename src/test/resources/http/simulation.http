@@ -14,4 +14,10 @@ GET http://localhost:8080/v1/simulation?sides=6&rolls=2
 GET http://localhost:8080/v1/simulation?dice=10&rolls=10000000&mode=conc
 
 ### Large iterative query
-GET http://localhost:8080/v1/simulation?dice=10&rolls=10000000&mode=iter
+GET http://localhost:8080/v1/simulation?dice=100&rolls=10000000&mode=iter
+
+### Large iterative query
+GET http://localhost:8080/v1/simulation?dice=1000000&rolls=1000&mode=iter
+
+### Large iterative query
+GET http://localhost:8080/v1/simulation?dice=10&rolls=10000&mode=conc

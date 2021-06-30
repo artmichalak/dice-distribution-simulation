@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.DEFAULT_NUMBER_OF_DICE;
@@ -20,7 +21,7 @@ import tech.blackfall.dicedist.simulation.AbstractIntegrationTest;
 
 class SimulationControllerTest extends AbstractIntegrationTest {
 
-  private final int defaultNumberOfDice = parseInt(DEFAULT_NUMBER_OF_DICE);
+  private final int defaultNumberOfDice = DEFAULT_NUMBER_OF_DICE;
 
   @Autowired
   SimulationMocker simulationMocker;
@@ -164,5 +165,22 @@ class SimulationControllerTest extends AbstractIntegrationTest {
         .header("Content-Type", "application/json"))
         .andExpect(status().isOk())
         .andExpect(content().json(expectedContent));
+  }
+
+  @Test
+  void shouldRunUsingPostMethod() throws Exception {
+    simulationMocker.loopNextRandomValues(0);
+
+    mockMvc.perform(post("/v1/simulation")
+        .content("{}")
+        .header("Content-Type", "application/json"))
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\"totals\":[" + defaultNumberOfDice + "],\"occurrences\":[100]}"));
+
+    mockMvc.perform(post("/v1/simulation")
+        .content("{\"dice\":5,\"rolls\":10,\"sides\":4,\"mode\":\"CONC\"}")
+        .header("Content-Type", "application/json"))
+        .andExpect(status().isOk())
+        .andExpect(content().json("{\"totals\":[5],\"occurrences\":[10]}"));
   }
 }

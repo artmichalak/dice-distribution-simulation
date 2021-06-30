@@ -5,6 +5,15 @@ logging.level:
 spring:
   application:
     name: dice-distribution
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dicedist
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 management:
   endpoints:
@@ -22,3 +31,4 @@ logbook:
     - /swagger-ui/*
   format:
     style: http
+

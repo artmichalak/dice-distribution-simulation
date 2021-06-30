@@ -16,6 +16,10 @@ import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MIN_NUMBER_OF_ROLLS;
 import static tech.blackfall.dicedist.simulation.adapter.api.SimulationConstants.MIN_NUMBER_OF_SIDES;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
@@ -50,6 +54,19 @@ class SimulationController {
 
   @GetMapping("/v1/simulation")
   @ResponseBody
+  @Operation(summary = "runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
+      + "passed as request parameters.")
+  @ApiResponse(
+      responseCode = "200",
+      description = """
+              Returns a random distribution containing two arrays: totals and occurrences.
+              """,
+      content = @Content(schema = @Schema(implementation = SimulationResultResponse.class)))
+  @ApiResponse(
+      responseCode = "400",
+      description = """
+              Returned when input is not within the allowed range.
+              """)
   public SimulationResultResponse getSimulation(
       @RequestParam(name = "dice", defaultValue = DEFAULT_NUMBER_OF_DICE_STR)
       @Min(MIN_NUMBER_OF_DICE) @Max(MAX_NUMBER_OF_DICE) int dice,
@@ -64,11 +81,24 @@ class SimulationController {
 
   @PostMapping("/v1/simulation")
   @ResponseBody
+  @Operation(summary = "runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
+      + "passed as payload")
+  @ApiResponse(
+      responseCode = "200",
+      description = """
+              Returns a random distribution containing two arrays: totals and occurrences.
+              """,
+      content = @Content(schema = @Schema(implementation = SimulationResultResponse.class)))
+  @ApiResponse(
+      responseCode = "400",
+      description = """
+              Returned when input is not within the allowed range.
+              """)
   public SimulationResultResponse postSimulation(@Valid @RequestBody SimulationRequest request) {
     log.info("Running simulation of rolls={} for dice={} with sides={}, using mode={}", request.getRolls(),
         request.getDice(), request.getSides(), request.getMode());
-    return runSimulation(RunSimulationCommand
-        .of(request.getMode(), request.getDice(), request.getSides(), request.getRolls()));
+    return runSimulation(
+        RunSimulationCommand.of(request.getMode(), request.getDice(), request.getSides(), request.getRolls()));
   }
 
   private SimulationResultResponse runSimulation(RunSimulationCommand cmd) {

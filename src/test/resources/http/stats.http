@@ -1,0 +1,2 @@
+### Get global stats
+GET http://localhost:8080/v1/simulation/stats

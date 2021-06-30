@@ -24,6 +24,6 @@ class SimulationResultEntity {
   private Integer numberOfSides;
 
   @OneToMany(cascade = CascadeType.ALL)
-  @JoinColumn(name = "simulationId")
+  @JoinColumn(name = "simulation_id")
   private Set<SimulationPartialResultEntity> values;
 }

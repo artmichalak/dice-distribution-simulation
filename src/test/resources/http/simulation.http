@@ -8,7 +8,7 @@ GET http://localhost:8080/v1/simulation?dice=1&sides=4&rolls=1
 GET http://localhost:8080/v1/simulation?dice=-10&sides=0&rolls=0
 
 ### Should use default number of dice
-GET http://localhost:8080/v1/simulation?sides=6&rolls=2
+GET http://localhost:8080/v1/simulation?dice=1&sides=10&rolls=99
 
 ### Large concurrent query
 GET http://localhost:8080/v1/simulation?dice=10&rolls=10000000&mode=conc

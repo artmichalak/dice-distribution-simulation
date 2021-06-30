@@ -23,7 +23,7 @@ To run the program execute the following command in the console:
 From IDE, simply run tech.blackfall.dicedist.DiceDistributionApplication main class.
 
 ## API definitions
-To visit full API definitions go to: `http://localhost:8080/swagger-ui/index.html`
+To visit full API definitions go to: `http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config`
 
 ## Endpoints
 * `GET /v1/simulation` - returns a random distribution for default setup (3 dice, 6-sided, 100 rolls)

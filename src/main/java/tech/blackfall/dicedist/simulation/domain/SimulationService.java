@@ -10,6 +10,7 @@ public class SimulationService {
 
   private final Collection<SimulationDistributionProvider> simulationDistributionProviders;
   private final SimulationPersister simulationPersister;
+  private final DiceSidesStatisticsProvider diceSidesStatisticsProvider;
 
   public SimulationResult runSimulation(RunSimulationCommand cmd) {
     SimulationDistributionProvider provider = simulationDistributionProviders.stream()
@@ -18,5 +19,9 @@ public class SimulationService {
         .orElseThrow(NoMatchingSimulationModeException::new);
     var simulationResult = provider.runSimulation(cmd);
     return simulationPersister.saveSimulationResult(SaveSimulationResultsCommand.of(simulationResult));
+  }
+
+  public DiceSidesStatisticsResult fetchDiceSidesStatistics() {
+    return diceSidesStatisticsProvider.fetchGlobalDiceSidesStatistics();
   }
 }

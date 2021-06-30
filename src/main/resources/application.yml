@@ -6,7 +6,7 @@ spring:
   application:
     name: dice-distribution
   datasource:
-    url: jdbc:postgresql://localhost:5432/dicedist
+    url: jdbc:postgresql://localhost:15432/dicedist
     username: postgres
     password: postgres
   jpa:

@@ -1,6 +1,5 @@
 package tech.blackfall.dicedist.simulation.adapter.api;
 
-import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 import static java.util.stream.Collectors.joining;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

@@ -4,12 +4,21 @@ This project provides endpoints for performing random dice rolling simulations.
 ## Building and starting the application
 In order to build the executable jar run:
 
-```gradlew build --no-daemon --console verbose```
+```$ gradlew build --no-daemon --console verbose```
 
 The resulting jar will be located in ```build/libs/``` catalog.
+
+Before running the program we need to launch the database. To do so, use `docker-compose` in the main project directory as follows: \
+```$ docker-compose up -d```
+
+This will bring up a running instance of PostgreSQL container in the background.
+
+To shut down the container use: \
+```$ docker-compose down```
+
 To run the program execute the following command in the console:
 
-```java -jar build/libs/dice-distribution-simulation-1.0-SNAPSHOT.jar```
+```$ java -jar build/libs/dice-distribution-simulation-1.0-SNAPSHOT.jar```
 
 From IDE, simply run tech.blackfall.dicedist.DiceDistributionApplication main class.
 
@@ -19,13 +28,23 @@ To visit full API definitions go to: `http://localhost:8080/swagger-ui/index.htm
 ## Endpoints
 * `GET /v1/simulation` - returns a random distribution for default setup (3 dice, 6-sided, 100 rolls)
 * `GET /v1/simulation?dice={numberOfDice}&sides={numberOfSides}&rolls={numberOfRolls}&mode={simulationMode}` - return a random distribution for `numberOfDice` dice, each having `numberOfSides` sides and executing `numberOfRolls` rolls. Additional parameter `mode` can have one of two values: `iter` - iterative algorithm or `conc` - concurrent using fork join pool. By default, the service uses `iter` version.
+* `POST /v1/simulation` - does exactly the same as `GET` but the payload contains parameters:
+```
+  {
+   "dice": "{numberOfDice}",
+   "rolls": "{numberOfRolls}",
+   "sides": "{numberOfSides}",
+   "mode": "{ITER|CONC}"
+  }
+```
 
 All parameters are optional. If any of the parameters is missing then the method uses a relevant defaults (3 dice, 6-sided, 100 rolls).
 
 ## Architecture overview
 The project follows hexagonal architecture principles (ports and adapters pattern) as described by Tom Hombergs to some point.
 
-The `GET /v1/simulation` method does not seem to be omnipotent at first. However this endpoint does not change the state of the server. It merely returns two arrays of random values.
+Technically, the `GET /v1/simulation` method is not omnipotent since it changes the server state and does not return the same values (since they are randomly generated). However, we can assume that the persistence is a side effect, used the same way as metrics or service telemetry.
+
 
 Since `GET` operations can be cached by web servers or intermediate software, the service adds headers to control caching: `Cache-Control: no-cache, must-revalidate`. This ensures the distribution is generated between different calls.  
 

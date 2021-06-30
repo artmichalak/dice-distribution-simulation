@@ -27,11 +27,19 @@ public abstract class AbstractSimulationDistributionProvider implements Simulati
     Map<Long, Integer> distribution = computeDistribution(cmd);
 
     List<SimulationPartialResult> partialResults = distribution.entrySet().stream()
-        .map(entry -> new SimulationPartialResult(entry.getKey(), entry.getValue()))
+        .map(entry -> SimulationPartialResult.builder()
+            .totalValue(entry.getKey())
+            .numberOfOccurrences(entry.getValue())
+            .build())
         .sorted(Comparator.comparing(SimulationPartialResult::getTotalValue))
         .collect(Collectors.toList());
 
-    return new SimulationResult(partialResults);
+    return SimulationResult.builder()
+        .numberOfDice(cmd.getNumberOfDice())
+        .numberOfRolls(cmd.getNumberOfRolls())
+        .numberOfSides(cmd.getNumberOfSides())
+        .values(partialResults)
+        .build();
   }
 
   protected abstract Map<Long, Integer> computeDistribution(RunSimulationCommand cmd);

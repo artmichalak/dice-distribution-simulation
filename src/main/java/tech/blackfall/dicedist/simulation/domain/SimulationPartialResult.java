@@ -1,10 +1,13 @@
 package tech.blackfall.dicedist.simulation.domain;
 
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
-@Value
+@Data
+@Builder
 public class SimulationPartialResult {
 
+  Long id;
   long totalValue;
   int numberOfOccurrences;
 }

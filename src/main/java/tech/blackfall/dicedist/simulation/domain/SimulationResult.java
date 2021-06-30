@@ -1,10 +1,16 @@
 package tech.blackfall.dicedist.simulation.domain;
 
 import java.util.List;
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
-@Value
+@Data
+@Builder
 public class SimulationResult {
 
+  Long id;
+  int numberOfDice;
+  int numberOfSides;
+  int numberOfRolls;
   List<SimulationPartialResult> values;
 }

@@ -101,6 +101,7 @@ class SimulationController {
   @Value
   static class SimulationResultResponse {
 
+    long id;
     List<Long> totals;
     List<Integer> occurrences;
 
@@ -115,7 +116,7 @@ class SimulationController {
           .map(SimulationPartialResultDto::getNumberOfOccurrences)
           .collect(toList());
 
-      return new SimulationResultResponse(totals, occurrences);
+      return new SimulationResultResponse(dto.getId(), totals, occurrences);
     }
   }
 }

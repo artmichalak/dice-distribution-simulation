@@ -6,5 +6,6 @@ import lombok.Value;
 @Value
 public class SimulationResultDto {
 
+  long id;
   List<SimulationPartialResultDto> values;
 }

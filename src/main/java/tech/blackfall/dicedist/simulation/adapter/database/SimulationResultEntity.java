@@ -1,9 +1,11 @@
 package tech.blackfall.dicedist.simulation.adapter.database;
 
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import lombok.Data;
 
@@ -15,12 +17,13 @@ class SimulationResultEntity {
   @GeneratedValue
   private Long id;
 
-  private Integer rolls;
+  private Integer numberOfRolls;
 
-  private Integer dices;
+  private Integer numberOfDice;
 
-  private Integer sides;
+  private Integer numberOfSides;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
+  @JoinColumn(name = "simulationId")
   private Set<SimulationPartialResultEntity> values;
 }

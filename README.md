@@ -18,12 +18,14 @@ To visit full API definitions go to: `http://localhost:8080/swagger-ui/index.htm
 
 ## Endpoints
 * `GET /v1/simulation` - returns a random distribution for default setup (3 dice, 6-sided, 100 rolls)
-* `GET /v1/simulation?dice={numberOfDice}&sides={numberOfSides}&rolls={numberOfRolls}&mode={simulationMode}` - return a random distribution for `numberOfDice` dice, each having `numberOfSides` sides and executing `numberOfRolls` rolls. Additional parameter `mode` can have one of two values: `iter` - iterative algorithm or `conc` - concurrent using fork join pool. By default the service uses ``iter``` version
+* `GET /v1/simulation?dice={numberOfDice}&sides={numberOfSides}&rolls={numberOfRolls}&mode={simulationMode}` - return a random distribution for `numberOfDice` dice, each having `numberOfSides` sides and executing `numberOfRolls` rolls. Additional parameter `mode` can have one of two values: `iter` - iterative algorithm or `conc` - concurrent using fork join pool. By default, the service uses `iter` version.
 
-If any of the parameters is missing then the method uses a relevant defaults (3 dice, 6-sided, 100 rolls).
+All parameters are optional. If any of the parameters is missing then the method uses a relevant defaults (3 dice, 6-sided, 100 rolls).
 
 ## Architecture overview
-The project follows hexagonal architecture principles to some point. The `GET /v1/simulation` method does not seem to be omnipotent at first. However this endpoint does not change the state of the server. It merely returns two arrays of random values.
+The project follows hexagonal architecture principles (ports and adapters pattern) as described by Tom Hombergs to some point.
+
+The `GET /v1/simulation` method does not seem to be omnipotent at first. However this endpoint does not change the state of the server. It merely returns two arrays of random values.
 
 Since `GET` operations can be cached by web servers or intermediate software, the service adds headers to control caching: `Cache-Control: no-cache, must-revalidate`. This ensures the distribution is generated between different calls.  
 

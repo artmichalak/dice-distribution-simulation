@@ -15,5 +15,5 @@ class SimulationPartialResultEntity {
 
   private Long totalValue;
 
-  private Long occurrences;
+  private Integer occurrences;
 }

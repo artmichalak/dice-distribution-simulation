@@ -5,6 +5,7 @@ import lombok.Value;
 @Value
 public class SimulationPartialResultDto {
 
+  long id;
   long totalValue;
   int numberOfOccurrences;
 }

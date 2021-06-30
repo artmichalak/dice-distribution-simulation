@@ -9,12 +9,14 @@ import org.springframework.stereotype.Service;
 public class SimulationService {
 
   private final Collection<SimulationDistributionProvider> simulationDistributionProviders;
+  private final SimulationPersister simulationPersister;
 
   public SimulationResult runSimulation(RunSimulationCommand cmd) {
     SimulationDistributionProvider provider = simulationDistributionProviders.stream()
         .filter(simulationDistributionProvider -> simulationDistributionProvider.supports(cmd.getSimulationMode()))
         .findFirst()
         .orElseThrow(NoMatchingSimulationModeException::new);
-    return provider.runSimulation(cmd);
+    var simulationResult = provider.runSimulation(cmd);
+    return simulationPersister.saveSimulationResult(SaveSimulationResultsCommand.of(simulationResult));
   }
 }

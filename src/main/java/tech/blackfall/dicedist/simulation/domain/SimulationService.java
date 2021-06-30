@@ -24,4 +24,14 @@ public class SimulationService {
   public DiceSidesStatisticsResult fetchDiceSidesStatistics() {
     return diceSidesStatisticsProvider.fetchGlobalDiceSidesStatistics();
   }
+
+  public DiceSidesRelativePercentageResult generateRelativePercentageStatistics(
+      GenerateRelativePercentageStatisticsCommand cmd) {
+    DiceSidesRelativePercentageResult result = diceSidesStatisticsProvider
+        .generateRelativePercentageStatistics(cmd);
+    if (result.getValues().isEmpty()) {
+      throw new DistributionNotFoundException(cmd.getNumberOfDice(), cmd.getNumberOfSides());
+    }
+    return result;
+  }
 }

@@ -1,2 +1,5 @@
 ### Get global stats
 GET http://localhost:8080/v1/simulation/stats
+
+### Get distribution
+GET http://localhost:8080/v1/simulation/distribution?dice=3&sides=6

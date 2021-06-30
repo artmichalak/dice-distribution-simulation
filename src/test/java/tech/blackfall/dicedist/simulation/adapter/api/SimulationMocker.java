@@ -34,19 +34,9 @@ class SimulationMocker implements RandomGeneratorProvider {
         .thenAnswer(new LoopingAnswer(prepareMockArray(first, rest)));
   }
 
-  void mockNextRandomValues(int first, int... rest) {
-    when(random.nextInt(anyInt()))
-        .thenAnswer(new LoopingAnswer(prepareMockArray(first, rest), 1));
-  }
-
   void loopNextRandomValuesFromTo(int from, int to) {
     when(random.nextInt(anyInt()))
         .thenAnswer(new FromToAnswer(from, to));
-  }
-
-  void mockNextRandomValuesFromTo(int from, int to) {
-    when(random.nextInt(anyInt()))
-        .thenAnswer(new FromToAnswer(from, to, 1));
   }
 
   void resetMocks() {

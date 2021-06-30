@@ -54,7 +54,7 @@ class SimulationController {
 
   @GetMapping("/v1/simulation")
   @ResponseBody
-  @Operation(summary = "runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
+  @Operation(summary = "Runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
       + "passed as request parameters.")
   @ApiResponse(
       responseCode = "200",
@@ -81,7 +81,7 @@ class SimulationController {
 
   @PostMapping("/v1/simulation")
   @ResponseBody
-  @Operation(summary = "runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
+  @Operation(summary = "Runs a simulation for given numbers of dice, sides and rolls as well as mode. Input values are"
       + "passed as payload")
   @ApiResponse(
       responseCode = "200",

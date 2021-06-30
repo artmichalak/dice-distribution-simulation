@@ -2,6 +2,7 @@ package tech.blackfall.dicedist.simulation.adapter.api;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
 import java.util.Random;
@@ -46,6 +47,10 @@ class SimulationMocker implements RandomGeneratorProvider {
   void mockNextRandomValuesFromTo(int from, int to) {
     when(random.nextInt(anyInt()))
         .thenAnswer(new FromToAnswer(from, to, 1));
+  }
+
+  void resetMocks() {
+    reset(random);
   }
 
   static class LoopingAnswer implements Answer<Integer> {
